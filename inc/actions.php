@@ -1,11 +1,12 @@
 <?php
 
-function index() {
+function index()
+{
     render('index');
-
 }
 
-function render($page, array $data = [], $template = 'default'){
+function render($page, array $data = [], $template = 'default')
+{
     extract($data);
     include "views/templates/{$template}_template.php";
 }
@@ -17,31 +18,35 @@ function form()
 
 function proc()
 {
-    $name = filter_var(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $phone = filter_var(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
-    $email = filter_var(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $errors = [];
 
-    //Валидация данных
+    // Виконуємо валідацію
+    $nameError = validateName($name);
+    $emailValid = validateEmail($email);
+    $phoneValid = validatePhone($phone);
 
-    if(empty($name)){
-        $errors[] = 'Имя не может быть пустым';
+    // Додаємо помилки до масиву
+    if ($nameError) {
+        $errors[] = $nameError;
     }
-    if(empty($phone)){
-        $errors[] = 'Телефон не может быть пустым';
+    if (!$emailValid) {
+        $errors[] = "Invalid email format.";
     }
-    if(empty($email)){
-        $errors[] = 'Email не может быть пустым';
+    if (!$phoneValid) {
+        $errors[] = "Invalid phone number.";
     }
 
-    //если ошибки то сохранияем и переправляем на форму
-
-    if($errors){
+    // Якщо є помилки, зберігаємо їх і повертаємо на форму
+    if ($errors) {
         setErrors($errors);
-        header('Location: form_page.php?error=form');
+        header('Location: /index.php?action=form');
         exit();
     }
 
-    header('Location: index_page.php');
+    // Якщо немає помилок, перенаправляємо на головну сторінку
+    header('Location: /index.php?action=index');
     exit();
 }

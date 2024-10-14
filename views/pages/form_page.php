@@ -1,36 +1,5 @@
-<?php
-$messages = [];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'] ?? '';
-    $phone = $_POST['phone'] ?? '';
-    $email = $_POST['email'] ?? '';
-
-    require 'validators.php';
-
-    // Валидация данных
-    $nameError = validateName($name);
-    $emailValid = validateEmail($email);
-    $phoneValid = validatePhone($phone);
-
-    if ($nameError) {
-        $messages[] = $nameError;
-    }
-    if (!$emailValid) {
-        $messages[] = "Invalid email format.";
-    }
-    if (!$phoneValid) {
-        $messages[] = "Invalid phone number.";
-    }
-
-    if (empty($messages)) {
-        echo "Data saved successfully.!";
-    }
-}
-?>
-
 <h1>Order</h1>
-<form action="/index.php?action=proc" method="post">
+<form action="/index.php?action=proc" method="post" novalidate>
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" required><br><br>
 
@@ -44,10 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 
 <?php
-if (!empty($messages)) {
+if (!empty($errors)) {
     echo "<ul>";
-    foreach ($messages as $message) {
-        echo "<li>" . htmlspecialchars($message) . "</li>";
+    foreach ($errors as $error) {
+        echo "<li>" . htmlspecialchars($error) . "</li>";
     }
     echo "</ul>";
 }
