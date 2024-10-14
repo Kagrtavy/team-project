@@ -1,8 +1,7 @@
 <?php
-include '../../inc/config.php';
+include __DIR__ . '/../../inc/config.php';
 ?>
 
 <footer>
     <p><?= footerText; ?></p>
 </footer>
-
