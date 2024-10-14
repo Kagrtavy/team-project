@@ -1,8 +1,3 @@
-<?php
-include __DIR__ . '/../../inc/config.php';
-?>
-
-
 <nav>
     <ul>
         <?php foreach (pages as $page): ?>
