@@ -1,11 +1,11 @@
 <?php
 // Connecting the configuration file
-require_once 'config.php';
+include_once 'inc/config.php';
 
 // Connecting files with functions
-require_once 'actions.php';
-require_once 'helpers.php';
-require_once 'validators.php';
+include_once 'inc/actions.php';
+include_once 'inc/helpers.php';
+include_once 'inc/validators.php';
 
 // Calling the initialization function
 init();
