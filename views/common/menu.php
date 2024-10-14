@@ -1,13 +1,7 @@
-<?php
-include '../../inc/config.php';
-?>
-
-
 <nav>
     <ul>
-        <?php foreach (pages as $page): ?>
-            <li><a href="index.php?action=<?= $page['action']; ?>"><?= $page['name']; ?></a></li>
+        <?php foreach (PAGES as $page_item): ?>
+            <li><a href="<?= getUrl($page_item['action']); ?>"><?= $page_item['name']; ?></a></li>
         <?php endforeach; ?>
     </ul>
 </nav>
-

@@ -1,15 +1,35 @@
 <?php
-function validateEmail($email) {
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return true;
-    } else {
-        return false;
+
+/**
+ * @param string $email
+ * @return string|null
+ */
+function validateEmail(string $email) : string | null
+{
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return 'Incorrect email';
     }
+    return null;
 }
-function validatePhone($phone) {
-    return preg_match('/^\+?[0-9]\d{1,14}$/', $phone);
+
+/**
+ * @param string $phone
+ * @return string|null
+ */
+function validatePhone(string $phone) : string | null
+{
+    if(!preg_match('/^\+?[0-9]\d{1,14}$/', $phone)){
+        return 'Incorrect phone';
+    }
+    return null;
 }
-function validateName($name) {
+
+/**
+ * @param string $name
+ * @return string|null
+ */
+function validateName(string $name) : string | null
+{
     if (empty($name)) {
         return "The name cannot be empty.";
     }

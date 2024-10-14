@@ -1,47 +1,68 @@
 <?php
 
-function index() {
+/**
+ *
+ */
+function index() : void
+{
     render('index');
-
 }
 
-function render($page, array $data = [], $template = 'default'){
+/**
+ * @param string $page
+ * @param array $data
+ * @param string $template
+ */
+function render(string $page, array $data = [],string $template = 'default') : void
+{
     extract($data);
     include "views/templates/{$template}_template.php";
 }
 
-function form()
+/**
+ *
+ */
+function form() : void
 {
     render('form', ['errors' => getErrors()]);
 }
 
-function proc()
+/**
+ *
+ */
+function proc() : void
 {
-    $name = filter_var(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $phone = filter_var(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
-    $email = filter_var(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $errors = [];
+    $name = htmlspecialchars(filter_input(INPUT_POST, 'name'));
+    $phone = htmlspecialchars(filter_input(INPUT_POST, 'phone'));
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
     //Валидация данных
-
-    if(empty($name)){
-        $errors[] = 'Имя не может быть пустым';
+    $errors = [];
+    if($nameError = validateName($name)){
+        $errors[] = $nameError;
     }
-    if(empty($phone)){
-        $errors[] = 'Телефон не может быть пустым';
+    if($phoneError = validatePhone($phone)){
+        $errors[] = $phoneError;
     }
-    if(empty($email)){
-        $errors[] = 'Email не может быть пустым';
+    if($emailError = validateEmail($email)){
+        $errors[] = $emailError;
     }
 
     //если ошибки то сохранияем и переправляем на форму
-
-    if($errors){
+    if(count($errors) > 0){
         setErrors($errors);
-        header('Location: form_page.php?error=form');
-        exit();
+        redirect('form');
     }
 
-    header('Location: index_page.php');
+    redirect('index');
+}
+
+/**
+ * @param atring $action
+ * @return never
+ */
+function redirect(string $action) : never
+{
+    header('Location: ' . getUrl($action));
     exit();
 }

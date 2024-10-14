@@ -1,8 +1,4 @@
-<?php
-include '../../inc/config.php';
-?>
-
 <footer>
-    <p><?= footerText; ?></p>
+    <p><?= FOOTER_TEXT; ?></p>
 </footer>
 
